@@ -30,11 +30,11 @@ janela.resizable(0,0)#desabilita a função de maximizar a tela de login
 janela.geometry("450x300") #definido o tamanho da tela 
 janela.config(bg="#E9E3D7")
 
-tk.Label(janela, text="Usuário").place(x=20,y=20) #Onde ira aparecer uma mensagem
+tk.Label(janela, text="Usuário", bg="#E9E3D7").place(x=20,y=20) #Onde ira aparecer uma mensagem
 nome = tk.Entry(janela)
 nome.place(height=20,width=150,x=70,y=20)# campo de texto onde iremos digitar o nome
 
-tk.Label(janela, text="Senha").place(x=25,y=70)#Onde ira aparecer uma mensagem
+tk.Label(janela, text="Senha", bg="#E9E3D7").place(x=25,y=70)#Onde ira aparecer uma mensagem
 senha = tk.Entry(janela, show="*")# campo de texto onde iremos digitar a senha
 senha.place(height=20,width=150,y=70,x=65)
 img = Image.open("Logo_Restaurante.png")
@@ -51,6 +51,7 @@ def cardapio():#tabela do cliente
     jlistaa = tk.Tk()
     jlistaa.title("Lista")
     jlistaa.geometry("400x300")
+    jlistaa.config(bg="#E9E3D7")
     cursor.execute('select nome, preco from cardapio')
     card = cursor.fetchall()
     select = ttk.Treeview(jlistaa, columns=("Nome", "Preco"), show="headings")
@@ -83,6 +84,7 @@ def select():
     jLista = tk.Toplevel()#uma segunda tela
     jLista.title("Cardapio Parcates")#nome da tela
     jLista.geometry("400x250")#tamanho
+    jLista.config(bg="#E9E3D7")
     cursor.execute("select id,nome,preco from cardapio")#Cogido do sql 
     card = cursor.fetchall()#puxando dos os dados fornecidos pelo mysql
     selec = ttk.Treeview(jLista,columns=("id","Nome","Preco"),show="headings")#criando uma treeview e definindo o nome das colunas
@@ -141,12 +143,12 @@ def log():
         janela.destroy()#fecha a janela principal 
         jsecundaria = tk.Tk()#definindo a janela 
         jsecundaria.title("Principal")#Nome da janela 
-        jsecundaria.config(bg="#b5b5b5")
+        jsecundaria.config(bg="#E9E3D7")
         jsecundaria.geometry("400x250")#tamanho da janela
         jsecundaria.resizable(0,0)#não permite que a janela seja maximizada
-        tk.Label(jsecundaria,text='Nome:',bg="#b5b5b5").place(x=9,y=41)#X e de um lado pro outro e y cima e baixo
-        tk.Label(jsecundaria,text='Preço:',bg="#b5b5b5").place(x=9,y=80)#X e de um lado pro outro e y cima e baixo
-        tk.Label(jsecundaria,text='ID:',bg="#b5b5b5").place(x=9,y=13)
+        tk.Label(jsecundaria,text='Nome:',bg="#E9E3D7").place(x=9,y=41)#X e de um lado pro outro e y cima e baixo
+        tk.Label(jsecundaria,text='Preço:',bg="#E9E3D7").place(x=9,y=80)#X e de um lado pro outro e y cima e baixo
+        tk.Label(jsecundaria,text='ID:',bg="#E9E3D7").place(x=9,y=13)
         id = tk.Entry(jsecundaria)
         nome2=tk.Entry(jsecundaria)
         preco=tk.Entry(jsecundaria)
@@ -159,7 +161,7 @@ def log():
         tk.Button(jsecundaria,text='insert', command=lambda: insert(nome2, preco)).place(x=120,y=130)#botao de insert
         tk.Button(jsecundaria,text='delete',command=lambda: delete(nome2)).place(x=170,y=130)#botao de delet
     else:
-        tk.Label(janela,text="nome/senha estao incorretos").place(x=100,y=200)#mostra quando os dados do usuarios estão incorretos
+        tk.Label(janela,text="nome/senha estao incorretos", bg="#E9E3D7").place(x=100,y=200)#mostra quando os dados do usuarios estão incorretos
 botao = tk.Button(janela, text="Entrar",command=log).place(height=50,width=100,y=100,x=50)#botao que executa a ação
 
 janela.bind('<Return>',lambda event:log())#Return e no nome do enter no teclado lambda event manda a função pedida
