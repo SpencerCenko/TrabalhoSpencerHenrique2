@@ -1,6 +1,7 @@
 import string
 import tkinter as tk #importando a tela
 from tkinter import messagebox, LabelFrame, PhotoImage,ttk#são as funções que estou puxando da biblioteca do tkinter
+from PIL import Image, ImageTk
 import mysql.connector
 """
 Login: usuario senha: 1234
@@ -36,7 +37,14 @@ nome.place(height=20,width=150,x=70,y=20)# campo de texto onde iremos digitar o 
 tk.Label(janela, text="Senha").place(x=25,y=70)#Onde ira aparecer uma mensagem
 senha = tk.Entry(janela, show="*")# campo de texto onde iremos digitar a senha
 senha.place(height=20,width=150,y=70,x=65)
-
+img = Image.open("Logo_Restaurante.png")
+aspect_ratio = img.height / img.width
+new_width = 200
+new_height = int(new_width * aspect_ratio)
+img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+img = ImageTk.PhotoImage(img)
+lb = tk.Label(janela, image=img, command=None)
+lb.place(height=180, width=200, x=220, y=20)
     
 def cardapio():#tabela do cliente
     janela.destroy()
