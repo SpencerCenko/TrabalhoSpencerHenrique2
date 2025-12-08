@@ -24,27 +24,10 @@ cursor = conexao.cursor()#o objeto que usamos para mexer no mysql pelo pyhon
 janela = tk.Tk() #definindo o nome da tela
 
 
-
-# Caminho da imagem original
-path = "Logo_restaurante1.png"
-
-# Abrir a imagem
-img = Image.open(path)
-
-# Redimensionar para 100x100
-img_resized = img.resize((100, 100))
-
-# Salvar arquivo de saída
-img_resized.save("Logo_restaurante1_100x100.png")
-
-print("Imagem redimensionada salva como Logo_restaurante1_100x100.png")
 janela.title("Login Parcates")#nome da janela
 janela.resizable(0,0)#desabilita a função de maximizar a tela de login
 janela.geometry("450x300") #definido o tamanho da tela 
 janela.config(bg="#E9E3D7")
-imagem = PhotoImage(file="Logo_restaurante1.png")
-lb = tk.Label(janela, image=imagem)
-lb.place(x=200,y=20)
 
 tk.Label(janela, text="Usuário").place(x=20,y=20) #Onde ira aparecer uma mensagem
 nome = tk.Entry(janela)
@@ -53,10 +36,6 @@ nome.place(height=20,width=150,x=70,y=20)# campo de texto onde iremos digitar o 
 tk.Label(janela, text="Senha").place(x=25,y=70)#Onde ira aparecer uma mensagem
 senha = tk.Entry(janela, show="*")# campo de texto onde iremos digitar a senha
 senha.place(height=20,width=150,y=70,x=65)
-
-
-
-
 
     
 def cardapio():#tabela do cliente
