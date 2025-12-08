@@ -24,23 +24,42 @@ cursor = conexao.cursor()#o objeto que usamos para mexer no mysql pelo pyhon
 janela = tk.Tk() #definindo o nome da tela
 
 
-janela.title("Login")#nome da janela
+
+# Caminho da imagem original
+path = "Logo_restaurante1.png"
+
+# Abrir a imagem
+img = Image.open(path)
+
+# Redimensionar para 100x100
+img_resized = img.resize((100, 100))
+
+# Salvar arquivo de saída
+img_resized.save("Logo_restaurante1_100x100.png")
+
+print("Imagem redimensionada salva como Logo_restaurante1_100x100.png")
+janela.title("Login Parcates")#nome da janela
 janela.resizable(0,0)#desabilita a função de maximizar a tela de login
-janela.geometry("400x300") #definido o tamanho da tela 
-# Carregar a imagem no formato suportado (PNG, GIF, etc.)
-tk.Label(janela, text="Usuário").place(x=50,y=20) #Onde ira aparecer uma mensagem
+janela.geometry("450x300") #definido o tamanho da tela 
+janela.config(bg="#E9E3D7")
+imagem = PhotoImage(file="Logo_restaurante1.png")
+lb = tk.Label(janela, image=imagem)
+lb.place(x=200,y=20)
+
+tk.Label(janela, text="Usuário").place(x=20,y=20) #Onde ira aparecer uma mensagem
 nome = tk.Entry(janela)
-nome.place(height=20,width=150,x=100,y=20)# campo de texto onde iremos digitar o nome
+nome.place(height=20,width=150,x=70,y=20)# campo de texto onde iremos digitar o nome
 
-tk.Label(janela, text="Senha").place(x=50,y=70)#Onde ira aparecer uma mensagem
+tk.Label(janela, text="Senha").place(x=25,y=70)#Onde ira aparecer uma mensagem
 senha = tk.Entry(janela, show="*")# campo de texto onde iremos digitar a senha
-senha.place(height=20,width=150,y=70,x=100)
+senha.place(height=20,width=150,y=70,x=65)
 
 
 
 
 
-def cardapio():
+    
+def cardapio():#tabela do cliente
     janela.destroy()
     jlistaa = tk.Tk()
     jlistaa.title("Lista")
@@ -75,7 +94,7 @@ def insert(nome2, preco):
         print('Produto cadastrado com sucesso')
 def select():
     jLista = tk.Toplevel()#uma segunda tela
-    jLista.title("Lista")#nome da tela
+    jLista.title("Cardapio Parcates")#nome da tela
     jLista.geometry("400x250")#tamanho
     cursor.execute("select id,nome,preco from cardapio")#Cogido do sql 
     card = cursor.fetchall()#puxando dos os dados fornecidos pelo mysql
@@ -116,44 +135,46 @@ def log():
      
     query = "select nome from log where nome = '"+e1+"'"#funções sendo passadas para o mysql e sendo definidas dentro de uma variavel
     query2 = "select senha from log where nome = '"+e1+"'"#funções sendo passadas para o mysql e sendo definidas dentro de uma variavel
-    query3 = "select admin from log where nome='"+e1+"'"
+    
     cursor.execute(query, e1)#usa o cursor para executar o comando e a variavel mais o e1 que e == nome.get()
     userNome = str(cursor.fetchone()).replace("(", "").replace(")", "").replace("]", "").replace("[", "").replace("'", "").replace(",", "")#ele subistitui os caracteres por caracteres vazios e o str trasforma o cursor.fetchone() em string pois ele vem como truple
     cursor.execute(query2, e1)#usa o cursor para executar o comando e a variavel mais o e2 que e == senha.get()
     userSenha = str(cursor.fetchone()).replace("(", "").replace("(", "").replace(")", "").replace("]", "").replace("[", "").replace("'", "").replace(",", "")#ele subistitui os caracteres por caracteres vazios e o str trasforma o cursor.fetchone() em string pois ele vem como truple 
-    cursor.execute(query3, e1)
-    userAdmin = str(cursor.fetchone()[0])
-
+    
+    cursor.execute("select nome,senha from cliente")
+    Nomecl = str(cursor.fetchall()).replace("(", "", 1).replace("]", "").replace("[", "").replace("'", "")#ele subistitui os caracteres por caracteres vazios e o str trasforma o cursor.fetchone() em string pois ele vem como truple
+    Nomecl, senhacl = Nomecl.split(",", 2) #aqui to pedindo pro python separar produto em 2 variaveis a partir da ","
+    senhacl = senhacl.replace(" ", "").replace(")", "", 1) #aqui so to dando uns replace pq fica um espaço e um parenteses q eu n quero q fiquem la
+    if(e2 == senhacl and e1 == Nomecl):
+        cardapio()
     if e1 == ""and e2 == "":
      messagebox.showerror("Erro",'Digite os valores')#messagebox importado par quando os dados estiverm em branco
     if(e1 == userNome and e2 == userSenha):
-        if userAdmin == "1":
-            tk.Label(janela,text="Login efetuado com sucesso").place(x=100,y=200)
-            janela.destroy()#fecha a janela principal 
-            jsecundaria = tk.Tk()#definindo a janela 
-            jsecundaria.title("Principal")#Nome da janela 
-            jsecundaria.config(bg="#b5b5b5")
-            jsecundaria.geometry("400x250")#tamanho da janela
-            jsecundaria.resizable(0,0)#não permite que a janela seja maximizada
-            tk.Label(jsecundaria,text='Nome:',bg="#b5b5b5").place(x=9,y=41)#X e de um lado pro outro e y cima e baixo
-            tk.Label(jsecundaria,text='Preço:',bg="#b5b5b5").place(x=9,y=80)#X e de um lado pro outro e y cima e baixo
-            tk.Label(jsecundaria,text='ID:',bg="#b5b5b5").place(x=9,y=13)
-            id = tk.Entry(jsecundaria)
-            nome2=tk.Entry(jsecundaria)
-            preco=tk.Entry(jsecundaria)
-            id.place(width=50,x=50,y=13)
-            preco.place(width=150,x=50,y=80)
-            nome2.place(width=150,x=50,y=41)
-            tk.Button(jsecundaria,text="Procurar produto",command=lambda:prato(nome2,preco,id)).place(x=250,y=10)
-            tk.Button(jsecundaria,text='select',command=lambda:select()).place(x=10,y=130)#botao de select
-            tk.Button(jsecundaria,text='update', command=lambda: upd(nome2, preco,id)).place(x=60,y=130)#botao de update 
-            tk.Button(jsecundaria,text='insert', command=lambda: insert(nome2, preco)).place(x=120,y=130)#botao de insert
-            tk.Button(jsecundaria,text='delete',command=lambda: delete(nome2)).place(x=170,y=130)#botao de delet
-        elif userAdmin == "0":
-            cardapio()
+        tk.Label(janela,text="Login efetuado com sucesso").place(x=100,y=200)
+        janela.destroy()#fecha a janela principal 
+        jsecundaria = tk.Tk()#definindo a janela 
+        jsecundaria.title("Principal")#Nome da janela 
+        jsecundaria.config(bg="#b5b5b5")
+        jsecundaria.geometry("400x250")#tamanho da janela
+        jsecundaria.resizable(0,0)#não permite que a janela seja maximizada
+        tk.Label(jsecundaria,text='Nome:',bg="#b5b5b5").place(x=9,y=41)#X e de um lado pro outro e y cima e baixo
+        tk.Label(jsecundaria,text='Preço:',bg="#b5b5b5").place(x=9,y=80)#X e de um lado pro outro e y cima e baixo
+        tk.Label(jsecundaria,text='ID:',bg="#b5b5b5").place(x=9,y=13)
+        id = tk.Entry(jsecundaria)
+        nome2=tk.Entry(jsecundaria)
+        preco=tk.Entry(jsecundaria)
+        id.place(width=50,x=50,y=13)
+        preco.place(width=150,x=50,y=80)
+        nome2.place(width=150,x=50,y=41)
+        tk.Button(jsecundaria,text="Procurar produto",command=lambda:prato(nome2,preco,id)).place(x=250,y=10)
+        tk.Button(jsecundaria,text='select',command=lambda:select()).place(x=10,y=130)#botao de select
+        tk.Button(jsecundaria,text='update', command=lambda: upd(nome2, preco,id)).place(x=60,y=130)#botao de update 
+        tk.Button(jsecundaria,text='insert', command=lambda: insert(nome2, preco)).place(x=120,y=130)#botao de insert
+        tk.Button(jsecundaria,text='delete',command=lambda: delete(nome2)).place(x=170,y=130)#botao de delet
     else:
         tk.Label(janela,text="nome/senha estao incorretos").place(x=100,y=200)#mostra quando os dados do usuarios estão incorretos
 botao = tk.Button(janela, text="Entrar",command=log).place(height=50,width=100,y=100,x=50)#botao que executa a ação
+
 janela.bind('<Return>',lambda event:log())#Return e no nome do enter no teclado lambda event manda a função pedida
 
 janela.mainloop()
